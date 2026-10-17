@@ -1,0 +1,104 @@
+﻿@typeparam T
+@using USS.Base.Extension
+
+<table class="table table-striped table-hover table-bordered">
+    
+    <thead class="table-primary">
+        <tr>
+            @foreach (var p in type.GetProperties())
+            {
+                @if (p.Name == "Id")
+                {
+                    @if (IdVisible)
+                    {
+                        <td>@p.Name</td>
+                    }
+                    continue;
+                }
+                <th>@p.Name</th>
+            }
+            @if (IsAction)
+            {
+                <th>Action</th>
+            }        
+        </tr>
+    </thead>
+    @if (Values?.Count > 0)
+    {
+        <tbody>
+
+            @foreach (var v in Values)
+            {
+
+                var data = v.GetPropertyValue("data");
+
+                <tr>
+                    @foreach (var p in type.GetProperties())
+                    {
+                        @if (p.Name == "Id")
+                        {
+                            @if (IdVisible)
+                            {
+                                <td>@data?.GetPropertyValue(p.Name)</td>
+                            }
+                            continue;
+                        }                       
+                        <td>
+                            @if ((bool) v.GetPropertyValue("IsEdit"))
+                            {
+                                var editdata = v.GetPropertyValue("EditData");
+                                <input type="text" value=@( editdata.GetPropertyValue(p.Name) ) @onchange="@( x => { editdata.SetPropertyValue(p.Name, (x as ChangeEventArgs).Value); ValuesChanged.InvokeAsync(Values); })" class="form-control" placeholder="Enter the @p.Name" aria-label="Name" />
+                            }
+                            else
+                            {
+
+                                    @data?.GetPropertyValue(p.Name)
+                            }
+                        </td>
+                    }
+
+                    @if (IsAction)
+                    {
+                        <td>
+                            @if ((bool)v.GetPropertyValue("IsEdit"))
+                            {
+                                <button class="btn btn-primary" @onclick=@( x => OnSave.InvokeAsync(v))>Save</button>
+                                <button class="btn btn-danger" @onclick=@( x => { OnCancel.InvokeAsync(v);})>Cancel</button>
+                            }
+                            else
+                            {
+                                <button class="btn btn-primary" @onclick=@( x => OnEdit.InvokeAsync(v))>Edit</button>
+                                <button class="btn btn-danger" @onclick=@( x => { OnDelete.InvokeAsync(v); IsDeleteModal=true; })>Delete</button>
+                            }
+                        </td>
+
+
+
+                    }
+                </tr>
+            }
+        </tbody>
+    }
+    <tfoot>
+        @if (IsAction && (Values?.Count(x => (Guid)x.GetPropertyValue("data").GetPropertyValue("Id") == default) ?? 0) == 0)
+        {
+            <tr>
+                <td colspan="4"><button class="btn btn-primary" @onclick="@( x=>{ OnAdd.InvokeAsync(); })">Add</button></td>
+            </tr>
+        }
+
+    </tfoot>
+    
+</table>
+
+<Modal @bind-Open="IsDeleteModal" Close="@((string x) => OnDeleteClose.InvokeAsync(x))" >
+    <form method="dialog">
+        <p>
+            Do you really want to delete this?
+        </p>
+        <menu>
+            <button value="Ok" class="btn btn-primary">Ok</button>
+            <button value="cancel" class="btn btn-danger">Cancel</button>
+        </menu>
+    </form>
+</Modal>

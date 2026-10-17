@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+
+
+    <PackageId>UnicoreSoftwareSolutions.Base.Web</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Unicore Software Solutions</Authors>
+    <Product>USS.Base.Web</Product>
+    <RepositoryUrl>https://github.com/unicoresoftwaresolutions/USS.Base.Web</RepositoryUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <WebPage>https://unicoresoftwaresolutions.com/</WebPage>
+
+
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\"/>
+    <None Include="LICENSE.txt" Pack="true" PackagePath=""/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="10.0.12" />
+    <PackageReference Include="UnicoreSoftwareSolutions.Base.Extension" Version="1.0.0" />
+    <PackageReference Include="UnicoreSoftwareSolutions.Base.Model" Version="1.0.0" />
+    <PackageReference Include="UnicoreSoftwareSolutions.Base.Service" Version="1.0.0" />
+  </ItemGroup>
+
+</Project>
