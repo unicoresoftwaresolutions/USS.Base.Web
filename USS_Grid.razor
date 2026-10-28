@@ -1,5 +1,6 @@
 ﻿@typeparam T
 @using USS.Base.Extension
+@using USS.Base.Model
 
 <table class="table table-striped table-hover table-bordered">
     
@@ -31,10 +32,13 @@
             {
 
                 var data = v.GetPropertyValue("data");
+                var props = type.GetProperties();
 
                 <tr>
-                    @foreach (var p in type.GetProperties())
+                    @foreach (var p in props)
                     {
+                        @if (p.PropertyType.Name == "Object") continue;
+
                         @if (p.Name == "Id")
                         {
                             @if (IdVisible)
@@ -76,6 +80,62 @@
 
                     }
                 </tr>
+
+
+
+
+
+                var dataNew = v.GetPropertyValue("data") as BaseEntityModel;
+
+                <tr>
+                    @foreach (var p in type.GetProperties())
+                    {
+                        @if (p.PropertyType.Name == "Object") continue;
+                        @if (p.Name == "Id")
+                        {
+                            @if (IdVisible)
+                            {
+                                <td>@data?.GetPropertyValue(p.Name)</td>
+                            }
+                            continue;
+                        }
+                        <td>
+                            @if ((bool)v.GetPropertyValue("IsEdit"))
+                            {
+                                var editdata = v.GetPropertyValue("EditData") as BaseEntityModel;
+                                <input type="text" value=@(editdata[p.Name]) @onchange="@( (ChangeEventArgs x) => { editdata[p.Name] = x.Value; ValuesChanged.InvokeAsync(Values); })" class="form-control" placeholder="Enter the @p.Name" aria-label="Name" />
+                            }
+                            else
+                            {
+
+                                @dataNew[p.Name]
+                            }
+                        </td>
+                    }
+
+                    @if (IsAction)
+                    {
+                        <td>
+                            @if ((bool)v.GetPropertyValue("IsEdit"))
+                            {
+                                <button class="btn btn-primary" @onclick=@( x => OnSave.InvokeAsync(v))>Save</button>
+                                <button class="btn btn-danger" @onclick=@( x => { OnCancel.InvokeAsync(v); })>Cancel</button>
+                            }
+                            else
+                            {
+                                <button class="btn btn-primary" @onclick=@( x => OnEdit.InvokeAsync(v))>Edit</button>
+                                <button class="btn btn-danger" @onclick=@( x => { OnDelete.InvokeAsync(v); IsDeleteModal = true; })>Delete</button>
+                            }
+                        </td>
+
+
+
+                    }
+                </tr>
+
+
+
+
             }
         </tbody>
     }

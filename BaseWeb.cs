@@ -5,7 +5,7 @@ using USS.Base.Service;
 
 namespace USS.Base.Web
 {
-    public class BaseWeb<T> : ComponentBase where T : new()
+    public class BaseWeb<T> : ComponentBase where T : BaseEntityModel, new()
     {
         protected BaseService<T> service { get; set; }
         protected bool IsDeleteModal { get; set; } = false;
