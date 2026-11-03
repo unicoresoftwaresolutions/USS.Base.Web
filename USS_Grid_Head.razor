@@ -1,0 +1,35 @@
+﻿@using System.Reflection
+<thead class="table-primary">
+    <tr>
+        @foreach (var p in Properties)
+        {
+            @if (p.Name == "Id")
+            {
+                @if (IdVisible)
+                {
+                    <td>@p.Name</td>
+                }
+                continue;
+            }
+            <th>@p.Name</th>
+        }
+        @if (IsAction)
+        {
+            <th>Action</th>
+        }
+    </tr>
+</thead>
+@code {
+    [Parameter]
+    public bool IdVisible { get; set; } = true;
+
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public bool IsAction { get; set; }
+
+    [Parameter]
+    public PropertyInfo[] Properties { get; set; }
+
+}

@@ -1,20 +1,21 @@
 ﻿@using USS.Base.Model
+@typeparam T where T : BaseEntityModel, new()
 @if (IsEdit)
 {
-    <input type="text" value=@(Value[Name]) @onchange="@( (ChangeEventArgs x) => { Value[Name] = x.Value; ValuesChanged.InvokeAsync(Value); })" class="form-control" placeholder="Enter the @Name" aria-label="Name" />
+    <input type="text" value=@(Value.EditData[Name]??"") @onchange="@( (ChangeEventArgs x) => { Value.EditData[Name] = x.Value; ValuesChanged.InvokeAsync(Value); })" class="form-control" placeholder="Enter the @Name" aria-label="Name" />
 }
 else
 {
-    @Value[Name]
+    @(Value.data[Name]??"")
 }
 
 @code {
 
     [Parameter]
-    public BaseEntityModel Value { get; set; }
+    public BaseGridModel<T> Value{ get; set; }
 
     [Parameter]
-    public EventCallback<BaseEntityModel> ValuesChanged { get; set; }
+    public EventCallback<BaseGridModel<T>> ValuesChanged { get; set; }
 
     [Parameter]
     public string Name { get; set; }

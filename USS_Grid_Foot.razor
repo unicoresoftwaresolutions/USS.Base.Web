@@ -1,0 +1,18 @@
+﻿<tfoot>
+    @if (AddActionVisible)
+    {
+        <tr>
+            <td colspan="4"><button class="btn btn-primary" @onclick="@( x => { OnAdd.InvokeAsync(); })">Add</button></td>
+        </tr>
+    }
+
+</tfoot>
+
+
+@code {
+    [Parameter]
+    public bool AddActionVisible { get; set; } 
+
+    [Parameter]
+    public EventCallback OnAdd { get; set; }
+}

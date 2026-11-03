@@ -4,10 +4,8 @@ using USS.Base.Model;
 
 namespace USS.Base.Web
 {
-    public partial class USS_Grid<T> : ComponentBase 
+    public partial class USS_Grid<T> where T : BaseEntityModel, new()
     {
-        [Parameter]
-        public List<T> Values { get; set; }
 
         protected Guid Id { get; set; }
         protected bool IsDeleteModal { get; set; } = false;
@@ -25,22 +23,28 @@ namespace USS.Base.Web
         public EventCallback OnAdd { get; set; }
 
         [Parameter]
-        public EventCallback<T> OnCancel { get; set; }
+        public List<BaseGridModel<T>> Values { get; set; }
 
         [Parameter]
-        public EventCallback<T> OnEdit { get; set; }
+        public EventCallback<List<BaseGridModel<T>>> ValuesChanged { get; set; }
+
+        [Parameter]
+        public EventCallback<BaseGridModel<T>> OnEdit { get; set; }
+
+        [Parameter]
+        public EventCallback<BaseGridModel<T>> OnSave { get; set; }
 
 
         [Parameter]
-        public EventCallback<T> OnDelete { get; set; }
+        public EventCallback<BaseGridModel<T>> OnDelete { get; set; }
+
+        [Parameter]
+        public EventCallback<BaseGridModel<T>> OnCancel { get; set; }
+
 
         [Parameter]
         public EventCallback<string> OnDeleteClose { get; set; }
 
-        [Parameter]
-        public EventCallback<T> OnSave { get; set; }
-        [Parameter]
-        public EventCallback<List<T>> ValuesChanged { get; set; }
         public Type type { get; set; }
         public PropertyInfo[] Properties { get; set; }
         public USS_Grid()
