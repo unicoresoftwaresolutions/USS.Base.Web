@@ -18,8 +18,8 @@
 
   </PropertyGroup>
   <ItemGroup>
-    <None Include="README.md" Pack="true" PackagePath="\"/>
-    <None Include="LICENSE.txt" Pack="true" PackagePath=""/>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+    <None Include="LICENSE.txt" Pack="true" PackagePath="" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,7 +29,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="10.0.12" />
     <PackageReference Include="UnicoreSoftwareSolutions.Base.Extension" Version="1.0.0" />
-    <PackageReference Include="UnicoreSoftwareSolutions.Base.Model" Version="1.0.0" />
+    <PackageReference Include="UnicoreSoftwareSolutions.Base.Model" Version="1.0.1" />
     <PackageReference Include="UnicoreSoftwareSolutions.Base.Service" Version="1.0.0" />
   </ItemGroup>
 

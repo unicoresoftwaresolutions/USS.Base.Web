@@ -1,19 +1,20 @@
-﻿@typeparam T
-
+﻿@using USS.Base.Model
 @if (IsEdit)
 {
-    <input type="text" @bind-value="Value" class="form-control" placeholder="Enter the @Name" aria-label="Name" />
+    <input type="text" value=@(Value[Name]) @onchange="@( (ChangeEventArgs x) => { Value[Name] = x.Value; ValuesChanged.InvokeAsync(Value); })" class="form-control" placeholder="Enter the @Name" aria-label="Name" />
 }
 else
 {
-    <b>Test: </b>
-    @Value
+    @Value[Name]
 }
 
 @code {
 
     [Parameter]
-    public T Value { get; set; }
+    public BaseEntityModel Value { get; set; }
+
+    [Parameter]
+    public EventCallback<BaseEntityModel> ValuesChanged { get; set; }
 
     [Parameter]
     public string Name { get; set; }
