@@ -1,0 +1,104 @@
+﻿@typeparam T where T : BaseEntityModel, new()
+@using System.Reflection
+@using USS.Base.Extension
+@using USS.Base.Model
+
+@if (Values?.Count > 0)
+{
+    <tbody>
+
+        @foreach (BaseGridModel<T> v in Values)
+        {
+            var data = v.GetPropertyValue("data") as BaseEntityModel;
+
+            <tr>
+                @foreach (var p in Properties)
+                {
+                    @if (p.PropertyType.Name == "Object") continue;
+
+                    @if (p.Name == "Id")
+                    {
+                        @if (IdVisible)
+                        {
+                            <td>@data?.GetPropertyValue(p.Name)</td>
+                        }
+                        continue;
+                    }
+                    <td>
+                        <USS_GridCell Value="v" IsEdit="@((bool)v.GetPropertyValue("IsEdit"))" Name=@p.Name />
+                    </td>
+                }
+
+                @if (IsAction)
+                {
+                    <td>
+                        @if ((bool)v.GetPropertyValue("IsEdit"))
+                        {
+                            <button class="btn btn-primary" @onclick=@( x => OnSave.InvokeAsync(v))>Save</button>
+                            <button class="btn btn-danger" @onclick=@( x => { OnCancel.InvokeAsync(v); })>Cancel</button>
+                        }
+                        else
+                        {
+                            <button class="btn btn-primary" @onclick=@( x => OnEdit.InvokeAsync(v))>Edit</button>
+                            <button class="btn btn-danger" @onclick=@( x => { OnDelete.InvokeAsync(v); IsDeleteModal = true; })>Delete</button>
+                        }
+                    </td>
+
+
+
+                }
+            </tr>
+
+        }
+    </tbody>
+}
+
+<Modal @bind-Open="IsDeleteModal" Close="@((string x) => OnDeleteClose.InvokeAsync(x))">
+    <form method="dialog">
+        <p>
+            Do you really want to delete this?
+        </p>
+        <menu>
+            <button value="Ok" class="btn btn-primary">Ok</button>
+            <button value="cancel" class="btn btn-danger">Cancel</button>
+        </menu>
+    </form>
+</Modal>
+
+@code {
+    [Parameter]
+    public bool IsAction { get; set; }
+
+    [Parameter]
+    public PropertyInfo[] Properties { get; set; }
+
+    [Parameter]
+    public bool IdVisible { get; set; } = true;
+
+    [Parameter]
+    public List<BaseGridModel<T>> Values { get; set; }
+
+    [Parameter]
+    public EventCallback<List<BaseGridModel<T>>> ValuesChanged { get; set; }
+
+    [Parameter]
+    public EventCallback<BaseGridModel<T>> OnEdit { get; set; }
+
+    [Parameter]
+    public EventCallback<BaseGridModel<T>> OnSave { get; set; }
+
+
+    [Parameter]
+    public EventCallback<BaseGridModel<T>> OnDelete { get; set; }
+
+    [Parameter]
+    public EventCallback<BaseGridModel<T>> OnCancel { get; set; }
+
+
+    [Parameter]
+    public EventCallback<string> OnDeleteClose { get; set; }
+
+
+    
+    protected bool IsDeleteModal { get; set; } = false;
+}

@@ -1,71 +1,14 @@
 ﻿@typeparam T
 @using USS.Base.Extension
-@using USS.Base.Model
 
 <table class="table table-striped table-hover table-bordered">
-    <USS_Grid_Head IsAction="@IsAction" IdVisible="@IdVisible" Properties="@Properties" />
+    
+    <USS_Grid_Head Title="@Title" IsAction="@IsAction" IdVisible="@IdVisible" Properties="@Properties" />
 
-    @if (Values?.Count > 0)
-    {
-        <tbody>
-
-            @foreach (BaseGridModel<T> v in Values)
-            {
-                var data = v.GetPropertyValue("data") as BaseEntityModel;
-
-                <tr>
-                    @foreach (var p in Properties)
-                    {
-                        @if (p.PropertyType.Name == "Object") continue;
-
-                        @if (p.Name == "Id")
-                        {
-                            @if (IdVisible)
-                            {
-                                <td>@data?.GetPropertyValue(p.Name)</td>
-                            }
-                            continue;
-                        }                       
-                        <td>
-                            <USS_GridCell Value="v" IsEdit="@((bool)v.GetPropertyValue("IsEdit"))" Name=@p.Name />
-                        </td>
-                    }
-
-                    @if (IsAction)
-                    {
-                        <td>
-                            @if ((bool)v.GetPropertyValue("IsEdit"))
-                            {
-                                <button class="btn btn-primary" @onclick=@( x => OnSave.InvokeAsync(v))>Save</button>
-                                <button class="btn btn-danger" @onclick=@( x => { OnCancel.InvokeAsync(v);})>Cancel</button>
-                            }
-                            else
-                            {
-                                <button class="btn btn-primary" @onclick=@( x => OnEdit.InvokeAsync(v))>Edit</button>
-                                <button class="btn btn-danger" @onclick=@( x => { OnDelete.InvokeAsync(v); IsDeleteModal=true; })>Delete</button>
-                            }
-                        </td>
-
-
-
-                    }
-                </tr>
-
-            }
-        </tbody>
-    }
+    <USS_Grid_Body IsAction="@IsAction" Properties="@Properties" IdVisible="@IdVisible" Values="@Values" ValuesChanged="@ValuesChanged" OnEdit="@OnEdit" OnSave="@OnSave" OnDelete="@OnDelete" OnCancel="@OnCancel" OnDeleteClose="@OnDeleteClose" />
 
     <USS_Grid_Foot OnAdd="OnAdd" AddActionVisible="@(IsAction && (Values?.Count(x => (Guid)x.GetPropertyValue("data").GetPropertyValue("Id") == default) ?? 0) == 0)" />
+
 </table>
 
-<Modal @bind-Open="IsDeleteModal" Close="@((string x) => OnDeleteClose.InvokeAsync(x))" >
-    <form method="dialog">
-        <p>
-            Do you really want to delete this?
-        </p>
-        <menu>
-            <button value="Ok" class="btn btn-primary">Ok</button>
-            <button value="cancel" class="btn btn-danger">Cancel</button>
-        </menu>
-    </form>
-</Modal>
+

@@ -7,9 +7,6 @@ namespace USS.Base.Web
     public partial class USS_Grid<T> where T : BaseEntityModel, new()
     {
 
-        protected Guid Id { get; set; }
-        protected bool IsDeleteModal { get; set; } = false;
-
         [Parameter]
         public bool IdVisible { get; set; } = true;
 
