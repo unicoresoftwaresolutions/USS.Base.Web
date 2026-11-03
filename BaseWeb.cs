@@ -46,17 +46,17 @@ namespace USS.Base.Web
         {
             f.IsEdit = true;
             var m = f.data.GetType().GetMethod("Clone");
-            f.EditData = (T)m.Invoke(f.data, null);
+            f.EditData = m?.Invoke(f.data, null) as T ?? new T();
         }
         public virtual async void Delete(BaseGridModel<T> f)
         {
-            Id = Guid.Parse(f.data.GetPropertyValue(nameof(Id)).ToString());
+            Id = Guid.Parse(f?.data[nameof(Id)].ToString() ?? Guid.Empty.ToString());
             IsDeleteModal = true;
         }
         public virtual async void Save(BaseGridModel<T> f)
         {
             f.IsEdit = false;
-            if (Guid.Parse(f.data.GetPropertyValue(nameof(Id)).ToString()) == default)
+            if (Guid.Parse(f.data[nameof(Id)].ToString() ?? Guid.Empty.ToString()) == Guid.Empty)
             {
                 f.EditData.SetPropertyValue(nameof(Id), Guid.NewGuid());
                 var result = await service.InsertAsync(f.EditData);
@@ -71,7 +71,7 @@ namespace USS.Base.Web
         public virtual void Cancel(BaseGridModel<T> f)
         {
 
-            if (Guid.Parse(f.data.GetPropertyValue(nameof(Id)).ToString()) == default) Datas.Remove(f);
+            if (Guid.Parse(f.data[nameof(Id)].ToString() ?? Guid.Empty.ToString()) == Guid.Empty) Datas.Remove(f);
             else f.IsEdit = false;
         }
     }

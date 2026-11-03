@@ -1,13 +1,20 @@
 ﻿@using USS.Base.Model
 @typeparam T where T : BaseEntityModel, new()
-@if (IsEdit)
+
+
+@if (Column != null)
 {
-    <input type="text" value=@(Value.EditData[Name]??"") @onchange="@( (ChangeEventArgs x) => { Value.EditData[Name] = x.Value; ValuesChanged.InvokeAsync(Value); })" class="form-control" placeholder="Enter the @Name" aria-label="Name" />
+    @if (IsEdit)
+    {
+        <input type="@Column.InputType" value=@(Value.EditData[Column.Name] ?? "") @onchange="@( (ChangeEventArgs x) => { Value.EditData[Column.Name] = x.Value; ValuesChanged.InvokeAsync(Value); })" class="form-control" placeholder="Enter the @Column.Name" aria-label="Name" />
+    }
+    else
+    {
+
+        @(Value.data[Column.Name] ?? "")
+    }
 }
-else
-{
-    @(Value.data[Name]??"")
-}
+
 
 @code {
 
@@ -18,8 +25,10 @@ else
     public EventCallback<BaseGridModel<T>> ValuesChanged { get; set; }
 
     [Parameter]
-    public string Name { get; set; }
+    public GridColumn Column { get; set; }
 
+    
     [Parameter]
     public bool IsEdit { get; set; }
+
 }

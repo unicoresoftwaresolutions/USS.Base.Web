@@ -43,15 +43,47 @@ namespace USS.Base.Web
         public EventCallback<string> OnDeleteClose { get; set; }
 
         public Type type { get; set; }
-        public PropertyInfo[] Properties { get; set; }
+
+        public List<GridColumn> Columns { get; set; }
         public USS_Grid()
         {
             type = typeof(T);
             var t1 = type.GetTypeInfo();
             if (t1.IsGenericType)  type = t1.GenericTypeArguments[0];
 
-            Properties = type.GetProperties();
-            Properties = Properties.Where(p=> p.Name!="Item").ToArray();
+            Columns = new List<GridColumn>();
+            foreach (var prop in type.GetProperties())
+            {
+                if (prop.Name != "Item")
+                {
+                    var column = new GridColumn()
+                    {
+                        Name = prop.Name,
+                        Title = prop.Name,
+                        DataType = prop.PropertyType.Name,
+                        InputType = "text"
+                    };
+                    if(prop.PropertyType == typeof(DateTime) || prop.PropertyType == typeof(DateTime?))
+                    {
+                        column.InputType = "date";
+                    }
+                    else if (prop.PropertyType == typeof(bool) || prop.PropertyType == typeof(bool?))
+                    {
+                        column.InputType = "checkbox";
+                    }
+                    else if (prop.PropertyType == typeof(byte) || prop.PropertyType == typeof(byte?) ||
+                                prop.PropertyType == typeof(short) || prop.PropertyType == typeof(short?) ||
+                                prop.PropertyType == typeof(int) || prop.PropertyType == typeof(int?) ||
+                                prop.PropertyType == typeof(long) || prop.PropertyType == typeof(long?) ||
+                                prop.PropertyType == typeof(float) || prop.PropertyType == typeof(float?) ||
+                                prop.PropertyType == typeof(double) || prop.PropertyType == typeof(double?) ||
+                                prop.PropertyType == typeof(decimal) || prop.PropertyType == typeof(decimal?))
+                    {
+                        column.InputType = "number";
+                    }
+                    Columns.Add(column);
+                }
+            }
         }
     }
 }

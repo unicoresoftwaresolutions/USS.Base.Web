@@ -1,13 +1,12 @@
 ﻿@typeparam T
-@using USS.Base.Extension
 
 <table class="table table-striped table-hover table-bordered">
     
-    <USS_Grid_Head Title="@Title" IsAction="@IsAction" IdVisible="@IdVisible" Properties="@Properties" />
+    <USS_Grid_Head Title="@Title" IsAction="@IsAction" IdVisible="@IdVisible" Columns="@Columns" />
 
-    <USS_Grid_Body IsAction="@IsAction" Properties="@Properties" IdVisible="@IdVisible" Values="@Values" ValuesChanged="@ValuesChanged" OnEdit="@OnEdit" OnSave="@OnSave" OnDelete="@OnDelete" OnCancel="@OnCancel" OnDeleteClose="@OnDeleteClose" />
+    <USS_Grid_Body IsAction="@IsAction" Columns="@Columns" IdVisible="@IdVisible" Values="@Values" ValuesChanged="@ValuesChanged" OnEdit="@OnEdit" OnSave="@OnSave" OnDelete="@OnDelete" OnCancel="@OnCancel" OnDeleteClose="@OnDeleteClose" />
 
-    <USS_Grid_Foot OnAdd="OnAdd" AddActionVisible="@(IsAction && (Values?.Count(x => (Guid)x.GetPropertyValue("data").GetPropertyValue("Id") == default) ?? 0) == 0)" />
+    <USS_Grid_Foot OnAdd="OnAdd" AddActionVisible="@(IsAction && (Values?.Count(x => (Guid)x.data["Id"] == default) ?? 0) == 0)" />
 
 </table>
 

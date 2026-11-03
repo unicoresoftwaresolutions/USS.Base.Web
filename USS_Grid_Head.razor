@@ -1,17 +1,17 @@
-﻿@using System.Reflection
+﻿
 <thead class="table-primary">
     <tr>
-        @foreach (var p in Properties)
+        @foreach (var col in Columns)
         {
-            @if (p.Name == "Id")
+            @if (col.Name == "Id")
             {
                 @if (IdVisible)
                 {
-                    <td>@p.Name</td>
+                    <td>@col.Name</td>
                 }
                 continue;
             }
-            <th>@p.Name</th>
+            <th>@col.Name</th>
         }
         @if (IsAction)
         {
@@ -30,6 +30,6 @@
     public bool IsAction { get; set; }
 
     [Parameter]
-    public PropertyInfo[] Properties { get; set; }
+    public List<GridColumn> Columns { get; set; }
 
 }

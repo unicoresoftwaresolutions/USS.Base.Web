@@ -1,6 +1,4 @@
 ﻿@typeparam T where T : BaseEntityModel, new()
-@using System.Reflection
-@using USS.Base.Extension
 @using USS.Base.Model
 
 @if (Values?.Count > 0)
@@ -9,43 +7,38 @@
 
         @foreach (BaseGridModel<T> v in Values)
         {
-            var data = v.GetPropertyValue("data") as BaseEntityModel;
 
             <tr>
-                @foreach (var p in Properties)
+                @foreach (var col in Columns)
                 {
-                    @if (p.PropertyType.Name == "Object") continue;
-
-                    @if (p.Name == "Id")
+                    @if (col.Name == "Id")
                     {
                         @if (IdVisible)
                         {
-                            <td>@data?.GetPropertyValue(p.Name)</td>
+                            <td>@v.data[col.Name] ?? "" </td>
                         }
                         continue;
                     }
                     <td>
-                        <USS_GridCell Value="v" IsEdit="@((bool)v.GetPropertyValue("IsEdit"))" Name=@p.Name />
+                        <USS_GridCell Value="v" IsEdit=@v.IsEdit Column=@col />
                     </td>
                 }
 
                 @if (IsAction)
                 {
                     <td>
-                        @if ((bool)v.GetPropertyValue("IsEdit"))
+                        @if (v.IsEdit)
                         {
                             <button class="btn btn-primary" @onclick=@( x => OnSave.InvokeAsync(v))>Save</button>
-                            <button class="btn btn-danger" @onclick=@( x => { OnCancel.InvokeAsync(v); })>Cancel</button>
+                            <button class="btn btn-danger"
+                                    @onclick=@( x => { OnCancel.InvokeAsync(v); } )>Cancel</button>
                         }
                         else
                         {
                             <button class="btn btn-primary" @onclick=@( x => OnEdit.InvokeAsync(v))>Edit</button>
-                            <button class="btn btn-danger" @onclick=@( x => { OnDelete.InvokeAsync(v); IsDeleteModal = true; })>Delete</button>
+                            <button class="btn btn-danger" @onclick=@( x => { OnDelete.InvokeAsync(v); IsDeleteModal = true; } )>Delete</button>
                         }
                     </td>
-
-
-
                 }
             </tr>
 
@@ -70,7 +63,7 @@
     public bool IsAction { get; set; }
 
     [Parameter]
-    public PropertyInfo[] Properties { get; set; }
+    public List<GridColumn> Columns { get; set; }
 
     [Parameter]
     public bool IdVisible { get; set; } = true;
