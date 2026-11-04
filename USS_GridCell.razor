@@ -6,12 +6,29 @@
 {
     @if (IsEdit)
     {
-        <input type="@Column.InputType" value=@(Value.EditData[Column.Name] ?? "") @onchange="@( (ChangeEventArgs x) => { Value.EditData[Column.Name] = x.Value; ValuesChanged.InvokeAsync(Value); })" class="form-control" placeholder="Enter the @Column.Name" aria-label="Name" />
+        if (Column.InputType == "checkbox")
+        {
+            <div class="form-field">
+                <input type="checkbox" class="check" checked="@(Value.data[Column.Name] == true ? "checked" : "null")" @onchange="@( (ChangeEventArgs x) => { Value.EditData[Column.Name] = x.Value; ValuesChanged.InvokeAsync(Value); })" />
+            </div>
+        }
+        else
+        {
+            <input type="@Column.InputType" value=@(Value.EditData[Column.Name] ?? "") @onchange="@( (ChangeEventArgs x) => { Value.EditData[Column.Name] = x.Value; ValuesChanged.InvokeAsync(Value); })" class="form-control" placeholder="Enter the @Column.Name" aria-label="Name" />
+        }
     }
     else
     {
-
-        @(Value.data[Column.Name] ?? "")
+        if(Column.InputType == "checkbox")
+        {
+            <div class="form-field">
+                <input type="checkbox" class="check" value="@(Value.data[Column.Name]==true?"True":"False")" disabled />
+            </div>
+        }
+        else
+        {
+            @(Value.data[Column.Name] ?? "")
+        }
     }
 }
 

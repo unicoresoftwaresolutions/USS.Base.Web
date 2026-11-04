@@ -65,6 +65,11 @@ namespace USS.Base.Web
                     };
                     if(prop.PropertyType == typeof(DateTime) || prop.PropertyType == typeof(DateTime?))
                     {
+                        column.InputType = "datetime-local";
+                    }
+
+                    else if (prop.PropertyType == typeof(DateOnly) || prop.PropertyType == typeof(DateOnly?))
+                    {
                         column.InputType = "date";
                     }
                     else if (prop.PropertyType == typeof(bool) || prop.PropertyType == typeof(bool?))
