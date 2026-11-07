@@ -1,4 +1,5 @@
 ﻿@using USS.Base.Model
+@using USS.Base.Web.Controls.Checkbox
 @typeparam T where T : BaseEntityModel, new()
 
 
@@ -8,9 +9,7 @@
     {
         if (Column.InputType == "checkbox")
         {
-            <div class="form-field">
-                <input type="checkbox" class="check" checked="@(Value.data[Column.Name] == true ? "checked" : "null")" @onchange="@( (ChangeEventArgs x) => { Value.EditData[Column.Name] = x.Value; ValuesChanged.InvokeAsync(Value); })" />
-            </div>
+            <USS_CTRL_Checkbox Value="@(Value.data[Column.Name] == true)" Text="" Disabled="false" />
         }
         else
         {
@@ -21,9 +20,7 @@
     {
         if(Column.InputType == "checkbox")
         {
-            <div class="form-field">
-                <input type="checkbox" class="check" value="@(Value.data[Column.Name]==true?"True":"False")" disabled />
-            </div>
+            <USS_CTRL_Checkbox Value="@(Value.data[Column.Name] == true)" Text="" Disabled="true" />
         }
         else
         {
