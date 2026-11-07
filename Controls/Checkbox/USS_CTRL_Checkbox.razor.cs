@@ -6,12 +6,11 @@ namespace USS.Base.Web.Controls.Checkbox
     public partial class USS_CTRL_Checkbox
     {
         [Parameter]
-        public bool Value
+        public bool? Value
         {
             get;
             set
             {
-
                 field = value;
                 ValueChanged.InvokeAsync(value);
             }
@@ -19,7 +18,7 @@ namespace USS.Base.Web.Controls.Checkbox
         }
 
         [Parameter]
-        public EventCallback<bool> ValueChanged { get; set; }
+        public EventCallback<bool?> ValueChanged { get; set; }
 
 
         [Parameter]

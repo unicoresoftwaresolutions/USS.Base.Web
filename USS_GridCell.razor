@@ -9,7 +9,7 @@
     {
         if (Column.InputType == "checkbox")
         {
-            <USS_CTRL_Checkbox Value="@(Value.data[Column.Name] == true)" Text="" Disabled="false" />
+            <USS_CTRL_Checkbox Value="@Value.data[Column.Name]" Text="" ValueChanged="@( (bool? x) => { Value.EditData[Column.Name] = x??false; ValuesChanged.InvokeAsync(Value); })" Disabled="false" />
         }
         else
         {
@@ -20,7 +20,14 @@
     {
         if(Column.InputType == "checkbox")
         {
-            <USS_CTRL_Checkbox Value="@(Value.data[Column.Name] == true)" Text="" Disabled="true" />
+            if(Value.data[Column.Name] is null)
+            {
+                <b>-</b>
+            }
+            else
+            {
+                <USS_CTRL_Checkbox Value="@(Value.data[Column.Name] == true)" Text="" Disabled="true" />
+            }
         }
         else
         {
