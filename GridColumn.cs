@@ -9,6 +9,6 @@ namespace USS.Base.Web
         public string Name { get; set; }
         public string Title { get; set; }
         public string DataType { get; set; }
-        public string InputType { get; set; }
+        public ControlType InputType { get; set; }
     }
 }

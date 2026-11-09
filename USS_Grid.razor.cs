@@ -61,20 +61,20 @@ namespace USS.Base.Web
                         Name = prop.Name,
                         Title = prop.Name,
                         DataType = prop.PropertyType.Name,
-                        InputType = "text"
+                        InputType = ControlType.Text
                     };
                     if(prop.PropertyType == typeof(DateTime) || prop.PropertyType == typeof(DateTime?))
                     {
-                        column.InputType = "datetime-local";
+                        column.InputType = ControlType.DateTimeLocal;
                     }
 
                     else if (prop.PropertyType == typeof(DateOnly) || prop.PropertyType == typeof(DateOnly?))
                     {
-                        column.InputType = "date";
+                        column.InputType = ControlType.Date;
                     }
                     else if (prop.PropertyType == typeof(bool) || prop.PropertyType == typeof(bool?))
                     {
-                        column.InputType = "checkbox";
+                        column.InputType = ControlType.Checkbox;
                     }
                     else if (prop.PropertyType == typeof(byte) || prop.PropertyType == typeof(byte?) ||
                                 prop.PropertyType == typeof(short) || prop.PropertyType == typeof(short?) ||
@@ -84,7 +84,7 @@ namespace USS.Base.Web
                                 prop.PropertyType == typeof(double) || prop.PropertyType == typeof(double?) ||
                                 prop.PropertyType == typeof(decimal) || prop.PropertyType == typeof(decimal?))
                     {
-                        column.InputType = "number";
+                        column.InputType = ControlType.Number;
                     }
                     Columns.Add(column);
                 }

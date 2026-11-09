@@ -28,9 +28,9 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="10.0.12" />
-    <PackageReference Include="UnicoreSoftwareSolutions.Base.Extension" Version="1.0.0" />
-    <PackageReference Include="UnicoreSoftwareSolutions.Base.Model" Version="1.0.1" />
-    <PackageReference Include="UnicoreSoftwareSolutions.Base.Service" Version="1.0.0" />
+    <PackageReference Include="UnicoreSoftwareSolutions.Base.Extension" Version="*" />
+    <PackageReference Include="UnicoreSoftwareSolutions.Base.Model" Version="*" />
+    <PackageReference Include="UnicoreSoftwareSolutions.Base.Service" Version="*" />
   </ItemGroup>
 
 </Project>
