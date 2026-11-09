@@ -7,7 +7,7 @@
 
 
     <PackageId>UnicoreSoftwareSolutions.Base.Web</PackageId>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
     <Authors>Unicore Software Solutions</Authors>
     <Product>USS.Base.Web</Product>
     <RepositoryUrl>https://github.com/unicoresoftwaresolutions/USS.Base.Web</RepositoryUrl>
